@@ -81,7 +81,7 @@ class PasswordGenerator
     add_pool(UPPER_CASES) if @include_upper_case
     add_pool(SPECIAL_CHARS) if @include_special
 
-    if @pools.flatten.length == 0
+    if @pools.empty?
       raise ArgumentError.new('Char pool is empty. Password cannot be generated')
     end
   end
