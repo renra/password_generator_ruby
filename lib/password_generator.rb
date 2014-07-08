@@ -15,7 +15,7 @@ class PasswordGenerator
     @excluded = opts[:exclude] || []
 
     if opts[:pool]
-      @pools.push(sanitize_pool(opts[:pool]))
+      add_pool(opts[:pool])
       include_other_pools_by_default = false
     else
       include_other_pools_by_default = true
@@ -32,10 +32,10 @@ class PasswordGenerator
       opts[:include_special] || include_other_pools_by_default
 
 
-    @pools.push(sanitize_pool(NUMS)) if @include_nums
-    @pools.push(sanitize_pool(LOWER_CASES)) if @include_lower_case
-    @pools.push(sanitize_pool(UPPER_CASES)) if @include_upper_case
-    @pools.push(sanitize_pool(SPECIAL_CHARS)) if @include_special
+    add_pool(NUMS) if @include_nums
+    add_pool(LOWER_CASES) if @include_lower_case
+    add_pool(UPPER_CASES) if @include_upper_case
+    add_pool(SPECIAL_CHARS) if @include_special
 
     if @pools.flatten.length == 0
       raise ArgumentError.new('Char pool is empty. Password cannot be generated')
@@ -62,6 +62,11 @@ class PasswordGenerator
   end
 
   private
+  def add_pool(pool)
+    sanitized_pool = sanitize_pool(pool)
+    @pools.push(sanitized_pool) unless sanitized_pool.empty?
+  end
+
   def sanitize_pool(pool)
     pool - @excluded
   end
