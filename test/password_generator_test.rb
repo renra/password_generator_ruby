@@ -168,17 +168,78 @@ class PasswordGeneratorTest < Minitest::Test
     end
   end
 
-  #def test_composite_password
-  #  generator = PasswordGenerator.compound(
-  #    [
-  #      {
-  #        length: 2,
-  #        pool: ('a'..'d').to_a
-  #      },
-  #      {
-  #        length: 6
-  #      }
-  #    ]
-  #  )
-  #end
+  def test_composite_password
+    pool = ('a'..'d').to_a
+
+    password = PasswordGenerator.generate(
+      {
+        length: 2,
+        pool: pool
+      },
+      {
+        length: 6
+      }
+    )
+
+
+    assert_equal password.length, 8
+
+    assert_equal pool.include?(password[0]), true
+    assert_equal pool.include?(password[1]), true
+
+    refute_equal password.split("") & PasswordGenerator::NUMS, []
+    refute_equal password.split("") & PasswordGenerator::LOWER_CASES, []
+    refute_equal password.split("") & PasswordGenerator::UPPER_CASES, []
+    refute_equal password.split("") & PasswordGenerator::SPECIAL_CHARS, []
+  end
+
+  def test_opts_for_numeric
+    opts = PasswordGenerator.opts_for(:numeric)
+
+    assert_equal opts, {
+      include_nums: true,
+      include_lower_case: false,
+      include_upper_case: false,
+      include_special: false
+    }
+  end
+
+  def test_opts_for_lower
+    opts = PasswordGenerator.opts_for(:lower)
+
+    assert_equal opts, {
+      include_nums: false,
+      include_lower_case: true,
+      include_upper_case: false,
+      include_special: false
+    }
+  end
+
+  def test_opts_for_upper
+    opts = PasswordGenerator.opts_for(:upper)
+
+    assert_equal opts, {
+      include_nums: false,
+      include_lower_case: false,
+      include_upper_case: true,
+      include_special: false
+    }
+  end
+
+  def test_opts_for_special
+    opts = PasswordGenerator.opts_for(:special)
+
+    assert_equal opts, {
+      include_nums: false,
+      include_lower_case: false,
+      include_upper_case: false,
+      include_special: true
+    }
+  end
+
+  def test_opts_for_nonsense
+    opts = PasswordGenerator.opts_for(:nonsense)
+
+    assert_equal opts, {}
+  end
 end

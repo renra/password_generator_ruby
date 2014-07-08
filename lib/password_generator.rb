@@ -7,6 +7,50 @@ class PasswordGenerator
   MIN_LENGTH = 1
   DEFAULT_LENGTH = 8
 
+  def self.generate(*opts)
+    opts = [{}] if opts.empty?
+
+    opts.inject("") do |password, generator_opts|
+      password << self.new(generator_opts).generate
+    end
+  end
+
+  def self.opts_for(type)
+    case type
+      when :numeric
+        {
+          include_nums: true,
+          include_lower_case: false,
+          include_upper_case: false,
+          include_special: false
+        }
+      when :lower
+        {
+          include_nums: false,
+          include_lower_case: true,
+          include_upper_case: false,
+          include_special: false
+        }
+      when :upper
+        {
+          include_nums: false,
+          include_lower_case: false,
+          include_upper_case: true,
+          include_special: false
+        }
+      when :special
+        {
+          include_nums: false,
+          include_lower_case: false,
+          include_upper_case: false,
+          include_special: true
+        }
+      else
+        {}
+    end
+  end
+
+
   def initialize(opts = {})
     @length = opts[:length] || DEFAULT_LENGTH
     raise "Length must be at least #{MIN_LENGTH}" if @length < MIN_LENGTH
@@ -40,10 +84,6 @@ class PasswordGenerator
     if @pools.flatten.length == 0
       raise ArgumentError.new('Char pool is empty. Password cannot be generated')
     end
-  end
-
-  def self.generate(options = {})
-    self.new(options).generate
   end
 
   def generate
