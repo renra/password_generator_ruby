@@ -4,7 +4,7 @@ class PasswordGenerator
   UPPER_CASES = ('A'..'Z').to_a
   SPECIAL_CHARS = ['?', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '~', '.', ',', '<', '>', '[', ']']
 
-  MIN_LENGTH = 4
+  MIN_LENGTH = 1
   DEFAULT_LENGTH = 8
 
   def initialize(opts = {})
@@ -42,16 +42,20 @@ class PasswordGenerator
     end
   end
 
+  def self.generate(options = {})
+    self.new(options).generate
+  end
+
   def generate
     password = ''
 
     remaining_chars = @length
 
-    @pools.each do |pool|
-      break if remaining_chars == 0
-
-      password << pool.sample
-      remaining_chars -= 1
+    if remaining_chars >= @pools.length
+      @pools.each do |pool|
+        password << pool.sample
+        remaining_chars -= 1
+      end
     end
 
     remaining_chars.times do
