@@ -15,10 +15,11 @@ class PasswordGenerator
     end
   end
 
-  def self.opts_for(type)
+  def self.opts_for(type, length = DEFAULT_LENGTH)
     case type
       when :numeric
         {
+          length: length,
           include_nums: true,
           include_lower_case: false,
           include_upper_case: false,
@@ -26,6 +27,7 @@ class PasswordGenerator
         }
       when :lower
         {
+          length: length,
           include_nums: false,
           include_lower_case: true,
           include_upper_case: false,
@@ -33,6 +35,7 @@ class PasswordGenerator
         }
       when :upper
         {
+          length: length,
           include_nums: false,
           include_lower_case: false,
           include_upper_case: true,
@@ -40,13 +43,40 @@ class PasswordGenerator
         }
       when :special
         {
+          length: length,
           include_nums: false,
           include_lower_case: false,
           include_upper_case: false,
           include_special: true
         }
+      when :alpha
+        {
+          length: length,
+          include_nums: false,
+          include_lower_case: true,
+          include_upper_case: true,
+          include_special: false
+        }
+      when :alnum
+        {
+          length: length,
+          include_nums: true,
+          include_lower_case: true,
+          include_upper_case: true,
+          include_special: false
+        }
+      when :all
+        {
+          length: length,
+          include_nums: true,
+          include_lower_case: true,
+          include_upper_case: true,
+          include_special: true
+        }
       else
-        {}
+        {
+          length: length
+        }
     end
   end
 
@@ -65,16 +95,19 @@ class PasswordGenerator
       include_other_pools_by_default = true
     end
 
-    @include_nums = opts[:include_nums] || include_other_pools_by_default
-    @include_lower_case = \
-      opts[:include_lower_case] || include_other_pools_by_default
+    @include_nums = opts[:include_nums]
+    @include_nums = include_other_pools_by_default if @include_nums.nil?
 
-    @include_upper_case = \
-      opts[:include_upper_case] || include_other_pools_by_default
+    @include_lower_case = opts[:include_lower_case]
+    @include_lower_case = include_other_pools_by_default \
+      if @include_lower_case.nil?
 
-    @include_special = \
-      opts[:include_special] || include_other_pools_by_default
+    @include_upper_case = opts[:include_upper_case]
+    @include_upper_case = include_other_pools_by_default \
+      if @include_upper_case.nil?
 
+    @include_special = opts[:include_special]
+    @include_special = include_other_pools_by_default if @include_special.nil?
 
     add_pool(NUMS) if @include_nums
     add_pool(LOWER_CASES) if @include_lower_case

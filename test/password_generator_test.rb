@@ -197,6 +197,7 @@ class PasswordGeneratorTest < Minitest::Test
     opts = PasswordGenerator.opts_for(:numeric)
 
     assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
       include_nums: true,
       include_lower_case: false,
       include_upper_case: false,
@@ -208,6 +209,7 @@ class PasswordGeneratorTest < Minitest::Test
     opts = PasswordGenerator.opts_for(:lower)
 
     assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
       include_nums: false,
       include_lower_case: true,
       include_upper_case: false,
@@ -219,6 +221,7 @@ class PasswordGeneratorTest < Minitest::Test
     opts = PasswordGenerator.opts_for(:upper)
 
     assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
       include_nums: false,
       include_lower_case: false,
       include_upper_case: true,
@@ -230,6 +233,7 @@ class PasswordGeneratorTest < Minitest::Test
     opts = PasswordGenerator.opts_for(:special)
 
     assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
       include_nums: false,
       include_lower_case: false,
       include_upper_case: false,
@@ -237,9 +241,59 @@ class PasswordGeneratorTest < Minitest::Test
     }
   end
 
+  def test_opts_for_alpha
+    opts = PasswordGenerator.opts_for(:alpha)
+
+    assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
+      include_nums: false,
+      include_lower_case: true,
+      include_upper_case: true,
+      include_special: false
+    }
+  end
+
+  def test_opts_for_alnum
+    opts = PasswordGenerator.opts_for(:alnum)
+
+    assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
+      include_nums: true,
+      include_lower_case: true,
+      include_upper_case: true,
+      include_special: false
+    }
+  end
+
+  def test_opts_for_all
+    opts = PasswordGenerator.opts_for(:all)
+
+    assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH,
+      include_nums: true,
+      include_lower_case: true,
+      include_upper_case: true,
+      include_special: true
+    }
+  end
+
+  def test_opts_for_all_with_length
+    opts = PasswordGenerator.opts_for(:all, 10)
+
+    assert_equal opts, {
+      length: 10,
+      include_nums: true,
+      include_lower_case: true,
+      include_upper_case: true,
+      include_special: true
+    }
+  end
+
   def test_opts_for_nonsense
     opts = PasswordGenerator.opts_for(:nonsense)
 
-    assert_equal opts, {}
+    assert_equal opts, {
+      length: PasswordGenerator::DEFAULT_LENGTH
+    }
   end
 end
