@@ -8,6 +8,10 @@ A configurable strong-password generator wanna-be
 
 ##How to use
 
+First of all, require the gem:
+
+    require 'password_generator'
+
 By default the generator creates 8 character-long passwords which include at least one number, lower case character, upper case character and special character (like ! for example).
 
     PasswordGenerator.generate
@@ -22,7 +26,7 @@ The rest of the defaults still applies. But maybe you don't really like the spec
 
 ## Pools
 
-```PasswordGenerator``` uses pools to group character. For example the character 'a' is in a different pool than the character 'A'. There are four internal pools which you can turn off by specifying
+```PasswordGenerator``` uses pools to group characters. For example the character 'a' is in a different pool than the character 'A'. There are four internal pools which you can turn off by specifying
 
     include_upper_case: false
     include_lower_case: false
@@ -39,7 +43,7 @@ The fifth pool you can use is your own. Here's how:
 
 With this setup the password will consist only of characters from 'd' to 'x'. Of course you can give it a simple array to cherry-pick just the characters you want. But remember that the less characters your pool has, the weaker your password is. (For example ```PasswordGenerator.generate(pool: ['a'])``` will give you just 8 'a's).
 
-If you use a custom pool, the four default pools will not be used. If you still want them to be used you can use the options specified above
+If you use a custom pool, the four default pools will not be used by default. If you still want them to be used you can use the options specified above
 
     PasswordGenerator.generate(pool: [':'], include_lower_case: true)
 
@@ -49,20 +53,20 @@ As always, PasswordGenerator tries to include at least one character from each p
 
 If you want to limit your selection to just one pool, it would be tedious to name all the options. You can use ```opts_for``` to give you a shorthand syntax:
 
-   PasswordGenerator.generate(PasswordGenerator.opts_for(:lower))
-   PasswordGenerator.generate(PasswordGenerator.opts_for(:lower, 12))
+    PasswordGenerator.generate(PasswordGenerator.opts_for(:lower))
+    PasswordGenerator.generate(PasswordGenerator.opts_for(:lower, 12))
 
-The first parameter can be :numeric, :lower, :upper, :special or :all. The second parameter is an optional length of the resulting password. So the code above generates passwords using only lower case characters.
+The first parameter can be :numeric, :lower, :upper, :special, :alpha, :alnum or :all. The second parameter is an optional length of the resulting password. So the code above generates passwords using only lower case characters.
 
 ## Excluding characters
 
-But what should you do when you want to use all normal characters instead of 'x'? Easy enough:
+But what should you do when you want to use all normal characters except 'x'? Easy enough:
 
     PasswordGenerator.generate(exclude: ['x'])
 
 Now 'x' will never be used. You might want to use exclude to limit the special chars depending on your needs. Again, if you exclude all characters from all your pools, ```PasswordGenerator``` will complain.
 
-## Reusing generators
+## Re-using generators
 
 ```PasswordGenerator.generate(options)``` is a shorthand syntax for
 
