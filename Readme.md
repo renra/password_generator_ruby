@@ -33,7 +33,7 @@ The rest of the defaults still applies. But maybe you don't really like the spec
     include_special: false
     include_nums: false
 
-If you use all these four options at the same time ```PasswordGenerator``` will throw an error because it will have an empty pool. All the four pools are included by default.
+All the four pools are included by default. If you use all these four options at the same time ```PasswordGenerator``` will throw an error because it will have an empty pool. Unless you use the following:
 
 ## Custom Pools
 
