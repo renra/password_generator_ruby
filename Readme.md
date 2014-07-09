@@ -43,7 +43,7 @@ The fifth pool you can use is your own. Here's how:
 
 With this setup the password will consist only of characters from 'd' to 'x'. Of course you can give it a simple array to cherry-pick just the characters you want. But remember that the less characters your pool has, the weaker your password is. (For example ```PasswordGenerator.generate(pool: ['a'])``` will give you just 8 'a's).
 
-If you use a custom pool, the four default pools will not be used by default. If you still want them to be used you can use the options specified above
+If you use a custom pool, the four internal pools will not be used by default. If you still want them to be used you can use the options specified above
 
     PasswordGenerator.generate(pool: [':'], include_lower_case: true)
 
