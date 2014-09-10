@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = "custom_password_generator"
-  spec.version = "1.0.0"
+  spec.version = "1.0.1"
   spec.files = ["lib/password_generator.rb"]
   spec.authors = ["Jan Renra Gloser"]
   spec.email = ["jan.renra.gloser@gmail.com"]
