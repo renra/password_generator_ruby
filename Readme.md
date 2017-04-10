@@ -2,11 +2,11 @@
 
 A configurable strong-password generator wanna-be
 
-##Installation
+## Installation
 
     gem install custom_password_generator
 
-##How to use
+## How to use
 
 First of all, require the gem:
 
